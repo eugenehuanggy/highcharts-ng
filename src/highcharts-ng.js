@@ -1,4 +1,4 @@
-if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports){
+if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports) {
   module.exports = 'highcharts-ng';
 }
 
@@ -12,7 +12,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   } else if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
     module.exports === 'highcharts-ng'
   ) {
-        Highcharts = require('highcharts');
+    Highcharts = require('highcharts');
   }
 
 
@@ -39,16 +39,20 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     var detector = ctrl.changeDetection || angular.equals;
 
     this.$onInit = function () {
-      initChart();
+      setTimeout(function () {
+        initChart();
+      }, 0);
       initialized = true;
     };
 
-    this.$onChanges = function(changesObject) {
+    this.$onChanges = function (changesObject) {
       if (changesObject.config && changesObject.config.currentValue !== undefined) {
         if (!initialized) {
           return;
         }
-        initChart();
+        setTimeout(function () {
+          initChart();
+        }, 0);
       }
     };
 
@@ -84,16 +88,17 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     this.addAnyNewAxes = function (configAxes, chart, isX) {
       if (configAxes && Array.isArray(configAxes)) {
-          angular.forEach(configAxes, function (s) {
-            if (!chart.get(s.id)) {
-              chart.addAxis(s, isX);
-            }
-          });
-        }
+        angular.forEach(configAxes, function (s) {
+          if (!chart.get(s.id)) {
+            chart.addAxis(s, isX);
+          }
+        });
+      }
     };
 
     this.$doCheck = function () {
-      if (ctrl.disableChangeDetection === true) {
+      if (ctrl.chart == undefined ||
+        ctrl.disableChangeDetection === true) {
         return;
       }
       if (!detector(ctrl.config, prevConfig)) {
@@ -149,7 +154,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var originalHeight = $element[0].clientHeight;
       $timeout(function () {
         if ($element[0].clientWidth !== 0 && $element[0].clientHeight !== 0 && ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight)) {
-          ctrl.chart.reflow();
+          ctrl.chart && ctrl.chart.reflow();
         }
       }, 0, false);
     }
