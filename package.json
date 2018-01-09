@@ -47,6 +47,5 @@
     "test": "grunt test"
   },
   "main": "./dist/highcharts-ng",
-  "dependencies": {
-  }
+  "dependencies": {}
 }
